@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetShop Cão Amigo - Rações e Acessórios</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>🐶 PetShop Cão Amigo</h1>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="material-icons">shopping_cart</i>
+                <span id="cart-counter">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2>Nossos Produtos</h2>
+        <section id="product-list">
+            <div class="product-card">
+                <img src="images/racao-premium.jpg" alt="Ração Premium para Cães Adultos">
+                <h3>Ração Premium Cães Adultos</h3>
+                <p>Nutrição completa e balanceada para o seu melhor amigo. Sabor carne. 15kg.</p>
+                <p class="price">R$ 189,90</p>
+                <button class="add-to-cart-btn" data-id="1" data-name="Ração Premium 15kg" data-price="189.90">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="product-card">
+                <img src="images/racao-filhotes.jpg" alt="Ração para Filhotes">
+                <h3>Ração Especial para Filhotes</h3>
+                <p>Crescimento saudável e energia na medida certa para os pequenos. Sabor frango. 10kg.</p>
+                <p class="price">R$ 159,50</p>
+                <button class="add-to-cart-btn" data-id="2" data-name="Ração Filhotes 10kg" data-price="159.50">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="product-card">
+                <img src="images/coleira.jpg" alt="Coleira de Couro">
+                <h3>Coleira de Couro Reforçada</h3>
+                <p>Segurança e estilo para os passeios. Disponível em várias cores e tamanhos.</p>
+                <p class="price">R$ 79,99</p>
+                <button class="add-to-cart-btn" data-id="3" data-name="Coleira de Couro" data-price="79.99">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="product-card">
+                <img src="images/cama.jpg" alt="Cama para Cachorro">
+                <h3>Cama Aconchegante</h3>
+                <p>O melhor descanso para o seu pet. Tecido macio e lavável.</p>
+                <p class="price">R$ 120,00</p>
+                <button class="add-to-cart-btn" data-id="4" data-name="Cama Aconchegante" data-price="120.00">Adicionar ao Carrinho</button>
+            </div>
+        </section>
+    </main>
+
+    <aside id="cart-sidebar">
+        <h3>Meu Carrinho</h3>
+        <ul id="cart-items">
+            <li class="empty-cart-message">Seu carrinho está vazio.</li>
+        </ul>
+        <div id="cart-summary">
+            <p>Subtotal: <span id="subtotal">R$ 0,00</span></p>
+            <div class="shipping-section">
+                <label for="cep">Calcular Frete e Prazo:</label>
+                <input type="text" id="cep" placeholder="Digite seu CEP">
+                <button onclick="calculateShipping()">Calcular</button>
+                <p id="shipping-info"></p>
+            </div>
+            <p>Frete: <span id="shipping-cost">R$ 0,00</span></p>
+            <hr>
+            <h4>Total: <span id="total-cost">R$ 0,00</span></h4>
+        </div>
+        <button id="checkout-btn">Finalizar Compra</button>
+    </aside>
+
+    <div id="overlay" onclick="toggleCart()"></div>
+
+    <footer>
+        <p>&copy; 2025 PetShop Cão Amigo. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    color: #3b82f6;
+    margin: 0;
+}
+
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.cart-icon .material-icons {
+    font-size: 32px;
+    color: #333;
+}
+
+#cart-counter {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Lista de Produtos */
+#product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    max-width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.product-card h3 {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.product-card .price {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #22c55e;
+    margin: 15px 0;
+}
+
+.add-to-cart-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Carrinho de Compras (Sidebar) */
+#cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Começa escondido */
+    width: 350px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+    z-index: 1002;
+    transition: right 0.4s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#cart-sidebar.open {
+    right: 0; /* Mostra o carrinho */
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+#cart-items li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#cart-items .empty-cart-message {
+    justify-content: center;
+    color: #888;
+    border: none;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.remove-item-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+#cart-summary {
+    border-top: 2px solid #ddd;
+    padding-top: 15px;
+}
+
+#checkout-btn {
+    background-color: #22c55e;
+    color: white;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1001;
+    display: none; /* Escondido por padrão */
+}
+
+#overlay.active {
+    display: block; /* Mostra o overlay */
+}
+
+/* Seção de Frete */
+.shipping-section {
+    margin: 15px 0;
+}
+
+.shipping-section input {
+    width: calc(100% - 90px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.shipping-section button {
+    padding: 9px 12px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#shipping-info {
+    font-size: 0.9em;
+    color: #16a34a;
+    margin-top: 8px;
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background-color: #333;
+    color: #fff;
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const cart = [];
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const overlay = document.getElementById('overlay');
+    const cartItemsList = document.getElementById('cart-items');
+    const cartCounter = document.getElementById('cart-counter');
+    const subtotalEl = document.getElementById('subtotal');
+    const shippingCostEl = document.getElementById('shipping-cost');
+    const totalCostEl = document.getElementById('total-cost');
+    let currentShippingCost = 0;
+
+    // Adiciona evento de clique para todos os botões "Adicionar ao Carrinho"
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            const name = button.dataset.name;
+            const price = parseFloat(button.dataset.price);
+
+            addToCart(id, name, price);
+        });
+    });
+
+    function addToCart(id, name, price) {
+        // Verifica se o item já está no carrinho
+        const existingItem = cart.find(item => item.id === id);
+        if (existingItem) {
+            existingItem.quantity++;
+        } else {
+            cart.push({ id, name, price, quantity: 1 });
+        }
+        updateCart();
+        openCart();
+    }
+    
+    function updateCart() {
+        cartItemsList.innerHTML = ''; // Limpa a lista atual
+        let subtotal = 0;
+
+        if (cart.length === 0) {
+            cartItemsList.innerHTML = '<li class="empty-cart-message">Seu carrinho está vazio.</li>';
+        } else {
+            cart.forEach(item => {
+                subtotal += item.price * item.quantity;
+
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="cart-item-details">
+                        ${item.name} (x${item.quantity})
+                        <span>R$ ${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                    <button class="remove-item-btn" data-id="${item.id}">X</button>
+                `;
+                cartItemsList.appendChild(li);
+            });
+        }
+
+        // Atualiza os totais
+        subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
+        shippingCostEl.textContent = `R$ ${currentShippingCost.toFixed(2)}`;
+        totalCostEl.textContent = `R$ ${(subtotal + currentShippingCost).toFixed(2)}`;
+
+        // Atualiza o contador do ícone do carrinho
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCounter.textContent = totalItems;
+
+        // Adiciona evento de clique para os botões de remover
+        document.querySelectorAll('.remove-item-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                removeFromCart(button.dataset.id);
+            });
+        });
+    }
+
+    function removeFromCart(id) {
+        const itemIndex = cart.findIndex(item => item.id === id);
+        if (itemIndex > -1) {
+            const item = cart[itemIndex];
+            if (item.quantity > 1) {
+                item.quantity--;
+            } else {
+                cart.splice(itemIndex, 1);
+            }
+        }
+        updateCart();
+    }
+
+    // Função para calcular o frete (SIMULAÇÃO)
+    window.calculateShipping = function() {
+        const cepInput = document.getElementById('cep');
+        const shippingInfo = document.getElementById('shipping-info');
+        
+        // Simulação simples: qualquer CEP com 8 dígitos tem um frete e prazo fixos.
+        if (cepInput.value.replace(/\D/g, '').length === 8) {
+            currentShippingCost = 15.50; // Valor fixo do frete
+            shippingInfo.textContent = 'Entrega estimada em 3 a 5 dias úteis.';
+        } else {
+            currentShippingCost = 0;
+            shippingInfo.textContent = 'Por favor, insira um CEP válido.';
+        }
+        updateCart();
+    };
+
+    // Funções para abrir/fechar o carrinho
+    window.toggleCart = function() {
+        cartSidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    };
+    
+    window.openCart = function() {
+        cartSidebar.classList.add('open');
+        overlay.classList.add('active');
+    }
+    
+    updateCart(); // Chama a função uma vez para exibir a mensagem de carrinho vazio
+});
